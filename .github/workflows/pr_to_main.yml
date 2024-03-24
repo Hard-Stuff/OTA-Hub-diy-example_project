@@ -1,0 +1,31 @@
+name: Check PIO buildability on PR into main branch
+
+on:
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    pio-build:
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ github.token }}
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Update __version__.h file
+              run: |
+                  rm -f ./include/configs/__version__.h
+                  echo "#define OTA_VERSION \"dev\"" >> ./include/configs/__version__.h
+
+            - name: Set up PlatformIO
+              run: |
+                  sudo apt-get install -y python3-pip
+                  pip3 install platformio
+              shell: bash
+
+            - name: Build Firmware
+              run: pio run
+
+            - name: Check Build Status
+              run: exit $?

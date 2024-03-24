@@ -1,0 +1,58 @@
+name: Build and Upload Firmware
+
+on:
+    release:
+        types:
+            - created
+
+jobs:
+    pio-build:
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ github.token }}
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Update __version__.h file
+              run: |
+                  rm -f ./include/configs/__version__.h
+                  echo "#define OTA_VERSION \"${{ github.event.release.tag_name }}\"" >> ./include/configs/__version__.h
+
+            - name: Set up PlatformIO
+              run: |
+                  sudo apt-get install -y python3-pip
+                  pip3 install platformio
+              shell: bash
+
+            - name: Build Firmware
+              run: pio run -e esp32s3
+
+            - name: Upload Firmware
+              uses: actions/upload-artifact@v2
+              with:
+                  name: firmware
+                  path: .pio/build/esp32s3/firmware.bin
+
+    update-firmware-asset:
+        needs: pio-build
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ github.token }}
+
+        steps:
+            - name: Download Firmware
+              uses: actions/download-artifact@v2
+              with:
+                  name: firmware
+                  path: firmware
+
+            - name: Show Contents of Firmware Directory
+              run: ls ./firmware/
+
+            - name: Upload Firmware to Release Assets
+              run: |
+                  gh release list --repo ${{ github.repository }}
+                  echo "Tag name = ${{ github.event.release.tag_name }}"
+                  sleep 5  # Add a 5-second delay
+                  gh release upload "${{ github.event.release.tag_name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
