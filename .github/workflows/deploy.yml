@@ -12,7 +12,7 @@ jobs:
             GH_TOKEN: ${{ github.token }}
 
         steps:
-            - uses: actions/checkout
+            - uses: actions/checkout@v4
 
             - name: Set up PlatformIO
               run: |
@@ -27,7 +27,7 @@ jobs:
                 pio run -e esp32
 
             - name: Upload Firmware
-              uses: actions/upload-artifact
+              uses: actions/upload-artifact@v4
               with:
                   name: firmware
                   path: .pio/build/esp32/firmware.bin
@@ -40,7 +40,7 @@ jobs:
 
         steps:
             - name: Download Firmware
-              uses: actions/download-artifact
+              uses: actions/download-artifact@v4
               with:
                   name: firmware
                   path: firmware
