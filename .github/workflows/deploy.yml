@@ -14,10 +14,9 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Update __version__.h file
+            - name: Update OTA_VERSION
               run: |
-                  rm -f ./include/configs/__version__.h
-                  echo "#define OTA_VERSION \"${{ github.event.release.tag_name }}\"" >> ./include/configs/__version__.h
+                  echo "export PLATFORMIO_BUILD_FLAGS=\"-DOTA_VERSION='${{ github.event.release.tag_name }}'\"" >> $GITHUB_ENV
 
             - name: Set up PlatformIO
               run: |
@@ -26,13 +25,13 @@ jobs:
               shell: bash
 
             - name: Build Firmware
-              run: pio run -e esp32s3
+              run: pio run -e esp32
 
             - name: Upload Firmware
               uses: actions/upload-artifact@v2
               with:
                   name: firmware
-                  path: .pio/build/esp32s3/firmware.bin
+                  path: .pio/build/esp32/firmware.bin
 
     update-firmware-asset:
         needs: pio-build

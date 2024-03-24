@@ -13,10 +13,9 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            - name: Update __version__.h file
+            - name: Update OTA_VERSION
               run: |
-                  rm -f ./include/configs/__version__.h
-                  echo "#define OTA_VERSION \"dev\"" >> ./include/configs/__version__.h
+                  echo "export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"cicd_build\"'" >> $GITHUB_ENV
 
             - name: Set up PlatformIO
               run: |
@@ -25,7 +24,7 @@ jobs:
               shell: bash
 
             - name: Build Firmware
-              run: pio run
+              run: pio run -e esp32
 
             - name: Check Build Status
               run: exit $?
