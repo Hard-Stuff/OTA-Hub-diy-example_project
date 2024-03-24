@@ -12,7 +12,7 @@ jobs:
             GH_TOKEN: ${{ github.token }}
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout
             - name: Update OTA_VERSION
               run: |
                   echo "export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"cicd_build\"'" >> $GITHUB_ENV

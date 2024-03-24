@@ -12,11 +12,7 @@ jobs:
             GH_TOKEN: ${{ github.token }}
 
         steps:
-            - uses: actions/checkout@v4
-
-            - name: Update OTA_VERSION
-              run: |
-                  echo "export PLATFORMIO_BUILD_FLAGS=\"-DOTA_VERSION='${{ github.event.release.tag_name }}'\"" >> $GITHUB_ENV
+            - uses: actions/checkout
 
             - name: Set up PlatformIO
               run: |
@@ -25,10 +21,13 @@ jobs:
               shell: bash
 
             - name: Build Firmware
-              run: pio run -e esp32
+              run: |
+                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"${{ github.event.release.tag_name }}\"'
+                echo "$PLATFORMIO_BUILD_FLAGS"
+                pio run -e esp32
 
             - name: Upload Firmware
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact
               with:
                   name: firmware
                   path: .pio/build/esp32/firmware.bin
@@ -41,7 +40,7 @@ jobs:
 
         steps:
             - name: Download Firmware
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact
               with:
                   name: firmware
                   path: firmware
