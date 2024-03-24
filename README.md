@@ -24,11 +24,11 @@ _\* Note that our default examples are for SSL-enabled connections, as GitHub re
 
 There are only two steps you need to consider for OTA updates from GitHub:
 
-1. Set up the CI/CD on your GitHub repo to automatically build the firmware on new releases. This is as easy as copying the [.github/workflows/](.github/workflows/) project into your PlatformIO base directory (like in this example). Then, build new releases as normal.
-   <img src="./media/GitHub_releases.png" width="400px" style="margin-top: 1em"/>
+1. Set up the CI/CD on your GitHub repo to automatically build the firmware on new releases. This is as easy as copying the [.github/workflows/](.github/workflows/) project into your PlatformIO base directory (like in this example). Then, build new releases as normal. <br /> <br />
+   <img src="./media/GitHub_releases.png" width="400px"/>
 
-2. Include the [OTA-Hub library](https://registry.platformio.org/libraries/hard-stuff/OTA-Hub-diy-device_client) and example code you'll find in [src/main.cpp](src/main.cpp). Note the `#define`s, and the inclusion of `OTA::isUpdateAvailable()`, `OTA::performUpdate(..)`, and `OTA::followRedirect(..)`.
-   <img src="./media/logs.png" width="400px" style="margin-top: 1em"/>
+2. Include the [OTA-Hub library](https://registry.platformio.org/libraries/hard-stuff/OTA-Hub-diy-device_client) and example code you'll find in [src/main.cpp](src/main.cpp). Note the `#define`s, and the inclusion of `OTA::isUpdateAvailable()`, `OTA::performUpdate(..)`, and `OTA::followRedirect(..)`. <br /> <br />
+   <img src="./media/logs.png" width="400px"/>
 
 That's it!
 
