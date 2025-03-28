@@ -22,7 +22,7 @@ jobs:
 
             - name: Build Firmware
               run: |
-                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"${{ github.event.release.tag_name }}\"'
+                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"${{ github.event.release.name }}\"'
                 echo "$PLATFORMIO_BUILD_FLAGS"
                 pio run -e esp32
 
@@ -51,6 +51,6 @@ jobs:
             - name: Upload Firmware to Release Assets
               run: |
                   gh release list --repo ${{ github.repository }}
-                  echo "Tag name = ${{ github.event.release.tag_name }}"
+                  echo "Tag name = ${{ github.event.release.name }}"
                   sleep 5  # Add a 5-second delay
-                  gh release upload "${{ github.event.release.tag_name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
+                  gh release upload "${{ github.event.release.name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}

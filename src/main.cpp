@@ -33,7 +33,7 @@ void setup()
     // Check OTA for updates
     OTA::UpdateObject details = OTA::isUpdateAvailable();
     details.print();
-    if (OTA::NO_UPDATE != details.condition)
+    if (!(OTA::NO_UPDATE == details.condition && OTA::OLD_DIFFERENT == details.condition))
     {
         Serial.println("An update is available!");
         // Perform OTA update
