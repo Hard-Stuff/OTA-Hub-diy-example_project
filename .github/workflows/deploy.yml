@@ -52,5 +52,4 @@ jobs:
               run: |
                   gh release list --repo ${{ github.repository }}
                   echo "Tag name = ${{ github.event.release.tag_name }}"
-                  sleep 5  # Add a 5-second delay
                   gh release upload "${{ github.event.release.tag_name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
