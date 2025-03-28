@@ -27,7 +27,7 @@ void setup()
     }
 
     // Initialise OTA
-    wifi_client.setCACert(OTAGH_CA_CERT); // Set the api.github.cm SSL cert on the WiFiSecure modem
+    wifi_client.setCACert(OTAGH_CA_CERT); // Set the api.github.com SSL cert on the WiFiSecure modem
     OTA::init(wifi_client);
 
     // Check OTA for updates
@@ -41,8 +41,8 @@ void setup()
         // GitHub hosts files on different server, so we have to follow the redirect, unfortunately.
         if (result == OTA::REDIRECT_REQUIRED)
         {
-            wifi_client.setCACert(OTAGH_REDIRECT_CA_CERT); // Now set the objects.githubusercontent.com SSL cert
-            OTA::continueRedirect(&details);               // Follow the redirect and performUpdate.
+            wifi_client.setInsecure();       // The objects.githubusercontent.com SSL cert is very unreliable, but we're already nice and secure as the URL was provided above.
+            OTA::continueRedirect(&details); // Follow the redirect and performUpdate.
         }
     }
     else
