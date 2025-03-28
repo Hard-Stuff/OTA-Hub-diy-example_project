@@ -51,6 +51,5 @@ jobs:
             - name: Upload Firmware to Release Assets
               run: |
                   gh release list --repo ${{ github.repository }}
-                  echo "Tag name = ${{ github.event.release.name }}"
-                  sleep 5  # Add a 5-second delay
-                  gh release upload "${{ github.event.release.name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
+                  echo "Tag name = ${{ github.event.release.tag_name }}"
+                  gh release upload "${{ github.event.release.tag_name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
