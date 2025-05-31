@@ -2,11 +2,8 @@
 
 // OTA Hub via GitHub
 #define OTAGH_OWNER_NAME "Hard-Stuff"
-#define OTAGH_REPO_NAME "OTA-Hub-project_testing"
-
-#include <ota-github-defaults.h>
-#include <OTA-Hub.hpp>
-#include <ota-github-cacerts.h>
+#define OTAGH_REPO_NAME "OTA-Hub-diy-example_project"
+#include <OTA-Hub-diy.hpp>
 
 // Networking
 static const char *WIFI_SSID = "Hard-Stuff.com";
