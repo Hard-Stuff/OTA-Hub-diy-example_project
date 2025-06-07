@@ -1,9 +1,9 @@
-name: Check PIO buildability on PR into main branch
+name: Build and Upload Firmware
 
 on:
-    pull_request:
-        branches:
-            - main
+    release:
+        types:
+            - created
 
 jobs:
     pio-build:
@@ -13,9 +13,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            - name: Update OTA_VERSION
-              run: |
-                  echo "export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"cicd_build\" -DOTA_BUILT_ON_GITHUB'" >> $GITHUB_ENV
 
             - name: Set up PlatformIO
               run: |
@@ -24,7 +21,35 @@ jobs:
               shell: bash
 
             - name: Build Firmware
-              run: pio run -e esp32
+              run: |
+                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"${{ github.event.release.name }}\" -DOTA_BUILT_ON_GITHUB'
+                echo "$PLATFORMIO_BUILD_FLAGS"
+                pio run -e esp32
 
-            - name: Check Build Status
-              run: exit $?
+            - name: Upload Firmware
+              uses: actions/upload-artifact@v4
+              with:
+                  name: firmware
+                  path: .pio/build/esp32/firmware.bin
+
+    update-firmware-asset:
+        needs: pio-build
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ github.token }}
+
+        steps:
+            - name: Download Firmware
+              uses: actions/download-artifact@v4
+              with:
+                  name: firmware
+                  path: firmware
+
+            - name: Show Contents of Firmware Directory
+              run: ls ./firmware/
+
+            - name: Upload Firmware to Release Assets
+              run: |
+                  gh release list --repo ${{ github.repository }}
+                  echo "Tag name = ${{ github.event.release.tag_name }}"
+                  gh release upload "${{ github.event.release.tag_name }}" ./firmware/firmware.bin --clobber --repo ${{ github.repository }}
