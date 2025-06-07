@@ -22,7 +22,7 @@ jobs:
 
             - name: Build Firmware
               run: |
-                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"${{ github.event.release.name }}\" -DOTA_BUILT_ON_GITHUB'
+                export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION="${{ github.event.release.name }}" -DOTA_BUILT_ON_GITHUB'
                 echo "$PLATFORMIO_BUILD_FLAGS"
                 pio run -e esp32
 
