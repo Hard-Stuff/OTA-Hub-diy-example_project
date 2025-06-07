@@ -3,7 +3,7 @@
 // OTA Hub via GitHub
 #define OTAGH_OWNER_NAME "Hard-Stuff"
 #define OTAGH_REPO_NAME "OTA-Hub-diy-example_project"
-#include <OTA-Hub-diy.hpp>
+#include <OTA-Hub.hpp>
 
 // Networking
 static const char *WIFI_SSID = "Hard-Stuff.com";
@@ -37,12 +37,9 @@ void setup()
     {
         Serial.println("An update is available!");
         // Perform OTA update
-        OTA::InstallCondition result = OTA::performUpdate(&details);
-        // GitHub hosts files on different server, so we have to follow the redirect, unfortunately.
-        if (result == OTA::REDIRECT_REQUIRED)
+        if (OTA::performUpdate(&details) == OTA::SUCCESS)
         {
-            wifi_client.setInsecure();       // The objects.githubusercontent.com SSL cert is very unreliable, but we're already nice and secure as the URL was provided above.
-            OTA::continueRedirect(&details); // Follow the redirect and performUpdate.
+            // .. success! It'll restart by default, or you can do other things here...
         }
     }
     else

@@ -38,7 +38,7 @@ That's it!
 
 ## Compabibility and testing
 
-OTA Hub DIY works with both your public and private repositories, pulling release files (that are automatically compiled) directly from GitHub. If using a private repository, you will need `#define OTAGH_BEARER "your_token"`, [learn more here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+OTA Hub DIY works with both your public and private repositories, pulling release files (that are automatically compiled) directly from GitHub. If using a private repository, you will need `#define OTAGH_BEARER "your_token"`, [learn more here](https://github.com/Hard-Stuff/OTA-Hub-device_client/blob/main/GITHUB-BEARER_TOKENS.md).
 
 This library has been tested on the ESP32S3 with both the internal WiFi functionality and a [SIMCOM SIM7600G](https://github.com/Hard-Stuff/TinyGSM).
 
