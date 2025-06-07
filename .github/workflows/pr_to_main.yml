@@ -15,7 +15,7 @@ jobs:
             - uses: actions/checkout@v4
             - name: Update OTA_VERSION
               run: |
-                  echo "export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"cicd_build\"'" >> $GITHUB_ENV
+                  echo "export PLATFORMIO_BUILD_FLAGS='-DOTA_VERSION=\"cicd_build\" -DOTA_BUILT_ON_GITHUB'" >> $GITHUB_ENV
 
             - name: Set up PlatformIO
               run: |
